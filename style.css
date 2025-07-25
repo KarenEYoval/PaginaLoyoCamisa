@@ -1,0 +1,110 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: #000000;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #000;
+  color: #00a86b;
+  padding: 1rem 2rem;
+  justify-content: space-between;
+  text-align: center;
+}
+
+header h1 {
+  font-size: 2rem;
+}
+
+nav a {
+  color: #ffffff;
+  text-decoration: none;
+  margin-left: 1.5rem;
+  font-weight: 500;
+}
+
+nav a:hover {
+  color: #00a86b;
+}
+
+.intro {
+  text-align: center;
+  padding: 4rem 2rem 2rem;
+}
+
+.intro h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.intro p {
+  color: #555;
+}
+
+.productos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.producto {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  max-width: 300px;
+  text-align: center;
+  transition: transform 0.2s;
+}
+
+.producto:hover {
+  transform: translateY(-5px);
+  border-color: #00a86b;
+}
+
+.producto img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.producto h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+.producto p {
+  color: #00a86b;
+  font-weight: bold;
+}
+
+.producto button {
+  margin-top: 0.5rem;
+  background-color: #00a86b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.producto button:hover {
+  background-color: #007e57;
+}
+
+footer {
+  background-color: #000;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+}
