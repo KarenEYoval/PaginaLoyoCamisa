@@ -1,51 +1,223 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LOYO | Tienda de Playeras</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  <header>
-    <h1>LOYO</h1>
-    <nav>
-      <a href="#">Productos</a>
-      <a href="#">Contacto</a>
-    </nav>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LOYO | Tienda de Playeras</title>
 
-  <main>
-    <section class="intro">
-      <h2>Playeras minimalistas para todos los gustos</h2>
-      <p>Diseños sencillos, colores neutros, estilo LOYO.</p>
-    </section>
+    <!-- Estilos externos -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
 
-    <section class="productos">
-      <div class="producto">
-        <img src="https://via.placeholder.com/300x300?text=Playera+Negra" alt="Playera Negra">
-        <h3>Playera Negra</h3>
-        <p>$250 MXN</p>
-        <button>Comprar</button>
-      </div>
-      <div class="producto">
-        <img src="https://via.placeholder.com/300x300?text=Playera+Blanca" alt="Playera Blanca">
-        <h3>Playera Blanca</h3>
-        <p>$250 MXN</p>
-        <button>Comprar</button>
-      </div>
-      <div class="producto">
-        <img src="https://via.placeholder.com/300x300?text=Playera+Verde" alt="Playera Verde">
-        <h3>Playera Verde</h3>
-        <p>$250 MXN</p>
-        <button>Comprar</button>
-      </div>
-    </section>
-  </main>
+    <!-- Estilos internos -->
+    <style>
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
 
-  <footer>
-    <p>&copy; 2025 LOYO. Todos los derechos reservados.</p>
-  </footer>
-</body>
+      .modal {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        width: 300px;
+        max-width: 100%;
+        text-align: center;
+        position: relative;
+      }
+
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .whatsapp-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #25d366;
+        color: white;
+        padding: 15px;
+        border-radius: 50%;
+        font-size: 24px;
+        text-decoration: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+      }
+
+      .whatsapp-btn:hover {
+        background-color: #1ebe5d;
+      }
+    </style>
+  </head>
+
+  <body>
+    <a
+      href="#"
+      class="whatsapp-btn"
+      style="bottom: 90px; background-color: #128c7e"
+      onclick="enviarCarritoWhatsApp()"
+    >
+      <i class="fa fa-shopping-cart"></i>
+      <span
+        id="contador-carrito"
+        style="
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background: red;
+          color: white;
+          font-size: 14px;
+          padding: 2px 6px;
+          border-radius: 50%;
+        "
+        >0</span
+      >
+    </a>
+    <!-- Botón de WhatsApp -->
+    <a
+      href="https://wa.me/522287779710?text=Hola%2C%20quiero%20más%20información%20sobre%20las%20playeras%20LOYO"
+      class="whatsapp-btn"
+      target="_blank"
+    >
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Modal dinámico -->
+    <div id="modal-container"></div>
+
+    <!-- Encabezado -->
+    <header>
+      <h1>LOYO</h1>
+    </header>
+
+    <!-- Contenido principal -->
+    <main>
+      <!-- Introducción -->
+      <section class="intro">
+        <h2>Playeras minimalistas para todos los gustos</h2>
+        <h3>Contáctanos al 2287779710</h3>
+        <br />
+        <h3>Solo pedidos en Xalapa</h3>
+        <br />
+        <p>Diseños sencillos, colores neutros, estilo LOYO.</p>
+      </section>
+
+      <!-- Productos cargados dinámicamente -->
+      <section class="productos" id="productos-container"></section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 LOYO. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="productos.js"></script>
+    <script>
+      // Cargar productos dinámicamente
+      const contenedor = document.getElementById("productos-container");
+
+      const carrito = [];
+
+      function añadirAlCarrito(nombre, precio) {
+        carrito.push({ nombre, precio });
+
+        Swal.fire({
+          title: "¡Añadido al carrito!",
+          text: `"${nombre}" se ha agregado correctamente.`,
+          icon: "success",
+          confirmButtonText: "Aceptar",
+          timer: 2000,
+          showConfirmButton: 'Aceptar',
+          
+          
+        });
+
+        // Actualiza el contador
+        document.getElementById("contador-carrito").textContent =
+          carrito.length;
+      }
+
+      productos.forEach((producto) => {
+        const div = document.createElement("div");
+        div.classList.add("producto");
+
+        div.innerHTML = `
+          <img src="${producto.imagen}" alt="${producto.nombre}" />
+          <p> ${producto.nombre}  </p>
+          <p>$${producto.precio} MXN</p>
+        <button onclick="añadirAlCarrito('${producto.nombre}', ${producto.precio})">Añadir al carrito</button>
+
+        `;
+
+        contenedor.appendChild(div);
+      });
+
+      // Cargar el modal desde modal.html
+      fetch("modal.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("modal-container").innerHTML = data;
+        });
+
+      // Función para cerrar el modal
+      function cerrarModal() {
+        document.getElementById("modal").classList.add("hidden");
+      }
+
+      function enviarCarritoWhatsApp() {
+        if (carrito.length === 0) {
+          alert("El carrito está vacío.");
+          return;
+        }
+
+        let mensaje = "Hola, me gustaría pedir:\n\n";
+        let total = 0;
+
+        carrito.forEach((producto, index) => {
+          mensaje += `${index + 1}. ${producto.nombre} - $${
+            producto.precio
+          } MXN\n`;
+          total += producto.precio;
+        });
+
+        mensaje += `\nTotal: $${total} MXN`;
+        const url = `https://wa.me/522287779710?text=${encodeURIComponent(
+          mensaje
+        )}`;
+        window.open(url, "_blank");
+      }
+
+      function actualizarContadorCarrito() {
+        const contador = document.getElementById("contador-carrito");
+        contador.textContent = carrito.length;
+      }
+    </script>
+  </body>
 </html>

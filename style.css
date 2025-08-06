@@ -54,17 +54,19 @@ nav a:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 2rem;
-  padding: 2rem;
+  gap: 20px;
+  padding: 20px;
 }
 
 .producto {
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 10px;
+  padding: 15px;
   max-width: 300px;
   text-align: center;
   transition: transform 0.2s;
+  width: 300px;
+  background-color: #f5f5f5;
 }
 
 .producto:hover {
@@ -74,6 +76,7 @@ nav a:hover {
 
 .producto img {
   width: 100%;
+  height: auto;
   border-radius: 8px;
 }
 
@@ -107,4 +110,20 @@ footer {
   text-align: center;
   padding: 1rem;
   margin-top: auto;
+}
+
+/* MEDIA QUERY para pantallas pequeñas */
+@media (max-width: 600px) {
+  .productos {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .producto {
+    width: 90%;
+  }
+
+  h2, h3, p {
+    padding: 0 10px;
+  }
 }
