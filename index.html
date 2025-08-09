@@ -170,7 +170,7 @@
 
         div.innerHTML = `
           <img src="${producto.imagen}" alt="${producto.nombre}" />
-          <p> ${producto.nombre}  </p>
+           <p class="nombre-producto">${producto.nombre}</p> 
           <p>$${producto.precio} MXN</p>
         <button onclick="añadirAlCarrito('${producto.nombre}', ${producto.precio})">Añadir al carrito</button>
 
